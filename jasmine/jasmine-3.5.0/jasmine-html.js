@@ -20,14 +20,14 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
-jasmineRequire.html = function(j$) {
+jasmineRequire.html = function (j$) {
   j$.ResultsNode = jasmineRequire.ResultsNode();
   j$.HtmlReporter = jasmineRequire.HtmlReporter(j$);
   j$.QueryString = jasmineRequire.QueryString();
   j$.HtmlSpecFilter = jasmineRequire.HtmlSpecFilter();
 };
 
-jasmineRequire.HtmlReporter = function(j$) {
+jasmineRequire.HtmlReporter = function (j$) {
   function ResultsStateBuilder() {
     this.topResults = new j$.ResultsNode({}, '', null);
     this.currentParent = this.topResults;
@@ -36,12 +36,12 @@ jasmineRequire.HtmlReporter = function(j$) {
     this.pendingSpecCount = 0;
   }
 
-  ResultsStateBuilder.prototype.suiteStarted = function(result) {
+  ResultsStateBuilder.prototype.suiteStarted = function (result) {
     this.currentParent.addChild(result, 'suite');
     this.currentParent = this.currentParent.last();
   };
 
-  ResultsStateBuilder.prototype.suiteDone = function(result) {
+  ResultsStateBuilder.prototype.suiteDone = function (result) {
     this.currentParent.updateResult(result);
     if (this.currentParent !== this.topResults) {
       this.currentParent = this.currentParent.parent;
@@ -52,9 +52,9 @@ jasmineRequire.HtmlReporter = function(j$) {
     }
   };
 
-  ResultsStateBuilder.prototype.specStarted = function(result) {};
+  ResultsStateBuilder.prototype.specStarted = function (result) {};
 
-  ResultsStateBuilder.prototype.specDone = function(result) {
+  ResultsStateBuilder.prototype.specDone = function (result) {
     this.currentParent.addChild(result, 'spec');
 
     if (result.status !== 'excluded') {
@@ -71,13 +71,13 @@ jasmineRequire.HtmlReporter = function(j$) {
   };
 
   function HtmlReporter(options) {
-    var config = function() {
+    var config = function () {
         return (options.env && options.env.configuration()) || {};
       },
       getContainer = options.getContainer,
       createElement = options.createElement,
       createTextNode = options.createTextNode,
-      navigateWithNewParam = options.navigateWithNewParam || function() {},
+      navigateWithNewParam = options.navigateWithNewParam || function () {},
       addToExistingQueryString =
         options.addToExistingQueryString || defaultQueryString,
       filterSpecs = options.filterSpecs,
@@ -85,7 +85,7 @@ jasmineRequire.HtmlReporter = function(j$) {
       symbols,
       deprecationWarnings = [];
 
-    this.initialize = function() {
+    this.initialize = function () {
       clearPrior();
       htmlReporterMain = createDom(
         'div',
@@ -96,7 +96,7 @@ jasmineRequire.HtmlReporter = function(j$) {
           createDom('a', {
             className: 'jasmine-title',
             href: 'http://jasmine.github.io/',
-            target: '_blank'
+            target: '_blank',
           }),
           createDom('span', { className: 'jasmine-version' }, j$.version)
         ),
@@ -112,7 +112,7 @@ jasmineRequire.HtmlReporter = function(j$) {
     };
 
     var totalSpecsDefined;
-    this.jasmineStarted = function(options) {
+    this.jasmineStarted = function (options) {
       totalSpecsDefined = options.totalSpecsDefined || 0;
     };
 
@@ -120,11 +120,11 @@ jasmineRequire.HtmlReporter = function(j$) {
 
     var stateBuilder = new ResultsStateBuilder();
 
-    this.suiteStarted = function(result) {
+    this.suiteStarted = function (result) {
       stateBuilder.suiteStarted(result);
     };
 
-    this.suiteDone = function(result) {
+    this.suiteDone = function (result) {
       stateBuilder.suiteDone(result);
 
       if (result.status === 'failed') {
@@ -133,12 +133,12 @@ jasmineRequire.HtmlReporter = function(j$) {
       addDeprecationWarnings(result);
     };
 
-    this.specStarted = function(result) {
+    this.specStarted = function (result) {
       stateBuilder.specStarted(result);
     };
 
     var failures = [];
-    this.specDone = function(result) {
+    this.specDone = function (result) {
       stateBuilder.specDone(result);
 
       if (noExpectations(result)) {
@@ -158,7 +158,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         createDom('li', {
           className: this.displaySpecInCorrectFormat(result),
           id: 'spec_' + result.id,
-          title: result.fullName
+          title: result.fullName,
         })
       );
 
@@ -169,13 +169,13 @@ jasmineRequire.HtmlReporter = function(j$) {
       addDeprecationWarnings(result);
     };
 
-    this.displaySpecInCorrectFormat = function(result) {
+    this.displaySpecInCorrectFormat = function (result) {
       return noExpectations(result) && result.status === 'passed'
         ? 'jasmine-empty'
         : this.resultStatus(result.status);
     };
 
-    this.resultStatus = function(status) {
+    this.resultStatus = function (status) {
       if (status === 'excluded') {
         return config().hideDisabled
           ? 'jasmine-excluded-no-display'
@@ -184,7 +184,7 @@ jasmineRequire.HtmlReporter = function(j$) {
       return 'jasmine-' + status;
     };
 
-    this.jasmineDone = function(doneResult) {
+    this.jasmineDone = function (doneResult) {
       var banner = find('.jasmine-banner');
       var alert = find('.jasmine-alert');
       var order = doneResult && doneResult.order;
@@ -258,7 +258,7 @@ jasmineRequire.HtmlReporter = function(j$) {
             'a',
             {
               title: 'randomized with seed ' + order.seed,
-              href: seedHref(order.seed)
+              href: seedHref(order.seed),
             },
             order.seed
           )
@@ -348,10 +348,10 @@ jasmineRequire.HtmlReporter = function(j$) {
           )
         );
 
-        find('.jasmine-failures-menu').onclick = function() {
+        find('.jasmine-failures-menu').onclick = function () {
           setMenuModeTo('jasmine-failure-list');
         };
-        find('.jasmine-spec-list-menu').onclick = function() {
+        find('.jasmine-spec-list-menu').onclick = function () {
           setMenuModeTo('jasmine-spec-list');
         };
 
@@ -421,7 +421,7 @@ jasmineRequire.HtmlReporter = function(j$) {
               'li',
               {
                 className:
-                  'jasmine-suite-detail jasmine-' + resultNode.result.status
+                  'jasmine-suite-detail jasmine-' + resultNode.result.status,
               },
               createDom(
                 'a',
@@ -457,7 +457,7 @@ jasmineRequire.HtmlReporter = function(j$) {
               'li',
               {
                 className: 'jasmine-' + resultNode.result.status,
-                id: 'spec-' + resultNode.result.id
+                id: 'spec-' + resultNode.result.id,
               },
               createDom(
                 'a',
@@ -484,7 +484,7 @@ jasmineRequire.HtmlReporter = function(j$) {
             createDom('input', {
               className: 'jasmine-fail-fast',
               id: 'jasmine-fail-fast',
-              type: 'checkbox'
+              type: 'checkbox',
             }),
             createDom(
               'label',
@@ -498,7 +498,7 @@ jasmineRequire.HtmlReporter = function(j$) {
             createDom('input', {
               className: 'jasmine-throw',
               id: 'jasmine-throw-failures',
-              type: 'checkbox'
+              type: 'checkbox',
             }),
             createDom(
               'label',
@@ -512,7 +512,7 @@ jasmineRequire.HtmlReporter = function(j$) {
             createDom('input', {
               className: 'jasmine-random',
               id: 'jasmine-random-order',
-              type: 'checkbox'
+              type: 'checkbox',
             }),
             createDom(
               'label',
@@ -526,7 +526,7 @@ jasmineRequire.HtmlReporter = function(j$) {
             createDom('input', {
               className: 'jasmine-disabled',
               id: 'jasmine-hide-disabled',
-              type: 'checkbox'
+              type: 'checkbox',
             }),
             createDom(
               'label',
@@ -539,7 +539,7 @@ jasmineRequire.HtmlReporter = function(j$) {
 
       var failFastCheckbox = optionsMenuDom.querySelector('#jasmine-fail-fast');
       failFastCheckbox.checked = config.failFast;
-      failFastCheckbox.onclick = function() {
+      failFastCheckbox.onclick = function () {
         navigateWithNewParam('failFast', !config.failFast);
       };
 
@@ -547,7 +547,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         '#jasmine-throw-failures'
       );
       throwCheckbox.checked = config.oneFailurePerSpec;
-      throwCheckbox.onclick = function() {
+      throwCheckbox.onclick = function () {
         navigateWithNewParam('throwFailures', !config.oneFailurePerSpec);
       };
 
@@ -555,13 +555,13 @@ jasmineRequire.HtmlReporter = function(j$) {
         '#jasmine-random-order'
       );
       randomCheckbox.checked = config.random;
-      randomCheckbox.onclick = function() {
+      randomCheckbox.onclick = function () {
         navigateWithNewParam('random', !config.random);
       };
 
       var hideDisabled = optionsMenuDom.querySelector('#jasmine-hide-disabled');
       hideDisabled.checked = config.hideDisabled;
-      hideDisabled.onclick = function() {
+      hideDisabled.onclick = function () {
         navigateWithNewParam('hideDisabled', !config.hideDisabled);
       };
 
@@ -569,7 +569,7 @@ jasmineRequire.HtmlReporter = function(j$) {
         optionsPayload = optionsMenuDom.querySelector('.jasmine-payload'),
         isOpen = /\bjasmine-open\b/;
 
-      optionsTrigger.onclick = function() {
+      optionsTrigger.onclick = function () {
         if (isOpen.test(optionsPayload.className)) {
           optionsPayload.className = optionsPayload.className.replace(
             isOpen,
@@ -721,7 +721,7 @@ jasmineRequire.HtmlReporter = function(j$) {
   return HtmlReporter;
 };
 
-jasmineRequire.HtmlSpecFilter = function() {
+jasmineRequire.HtmlSpecFilter = function () {
   function HtmlSpecFilter(options) {
     var filterString =
       options &&
@@ -729,7 +729,7 @@ jasmineRequire.HtmlSpecFilter = function() {
       options.filterString().replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
     var filterPattern = new RegExp(filterString);
 
-    this.matches = function(specName) {
+    this.matches = function (specName) {
       return filterPattern.test(specName);
     };
   }
@@ -737,7 +737,7 @@ jasmineRequire.HtmlSpecFilter = function() {
   return HtmlSpecFilter;
 };
 
-jasmineRequire.ResultsNode = function() {
+jasmineRequire.ResultsNode = function () {
   function ResultsNode(result, type, parent) {
     this.result = result;
     this.type = type;
@@ -745,15 +745,15 @@ jasmineRequire.ResultsNode = function() {
 
     this.children = [];
 
-    this.addChild = function(result, type) {
+    this.addChild = function (result, type) {
       this.children.push(new ResultsNode(result, type, this));
     };
 
-    this.last = function() {
+    this.last = function () {
       return this.children[this.children.length - 1];
     };
 
-    this.updateResult = function(result) {
+    this.updateResult = function (result) {
       this.result = result;
     };
   }
@@ -761,22 +761,22 @@ jasmineRequire.ResultsNode = function() {
   return ResultsNode;
 };
 
-jasmineRequire.QueryString = function() {
+jasmineRequire.QueryString = function () {
   function QueryString(options) {
-    this.navigateWithNewParam = function(key, value) {
+    this.navigateWithNewParam = function (key, value) {
       options.getWindowLocation().search = this.fullStringWithNewParam(
         key,
         value
       );
     };
 
-    this.fullStringWithNewParam = function(key, value) {
+    this.fullStringWithNewParam = function (key, value) {
       var paramMap = queryStringToParamMap();
       paramMap[key] = value;
       return toQueryString(paramMap);
     };
 
-    this.getParam = function(key) {
+    this.getParam = function (key) {
       return queryStringToParamMap()[key];
     };
 
